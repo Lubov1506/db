@@ -99,3 +99,16 @@ CREATE TABLE messages (
     chat_id int ,
     FOREIGN KEY (chat_id, author_id) REFERENCES user_to_chat(chat_id, user_id)
 );
+
+CREATE TABLE content (
+    id serial PRIMARY KEY,
+    name varchar(128),
+    description text,
+    author_id int REFERENCES users(id),
+    created_at timestamp DEFAULT current_timestamp
+);
+CREATE TABLE reactions (
+    author_id INT REFERENCES users(id),
+    content_id int REFERENCES content(id),
+    is_liked BOOLEAN 
+);
