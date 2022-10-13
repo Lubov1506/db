@@ -74,3 +74,28 @@ INSERT INTO products_to_orders (product_id, order_id, quantity) VALUES
 (2, 2, 1),
 (3, 3, 2),
 (1, 1, 1);
+
+
+CREATE TABLE chat (
+    id serial PRIMARY KEY,
+    name varchar(64) CHECK (name != ''),
+    owner_id int REFERENCES users(id),
+    created_at timestamp DEFAULT current_timestamp
+);
+INSERT INTO chat (name, owner_id) VALUES ();
+
+CREATE TABLE user_to_chat (
+    user_id int REFERENCES users(id),
+    chat_id int REFERENCES chat(id),
+    join_at timestamp DEFAULT current_timestamp,
+    PRIMARY KEY (user_id, chat_id)
+);
+
+CREATE TABLE messages (
+    id serial PRIMARY KEY,
+    body text CHECK (body != ''),
+    created_at timestamp DEFAULT current_timestamp,
+    author_id int,
+    chat_id int ,
+    FOREIGN KEY (chat_id, author_id) REFERENCES user_to_chat(chat_id, user_id)
+);
