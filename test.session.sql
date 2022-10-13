@@ -18,59 +18,59 @@ INSERT INTO users (first_name,last_name,email,gender,isSubsribe, birthday, heigh
 ('Tesest', 'jhjgbvdgfgbn', 'test@gmdxfffgdail.com', 'female', false, '1999-05-10', 1.13);
 
 
+INSERT INTO products (id, name, category, price, quantity)
+VALUES (
+    id:integer,
+    'name:character varying',
+    'category:character varying',
+    price:numeric,
+    quantity:integer
+  );
 
-ALTER TABLE users 
-ADD CONSTRAINT "UNIQUE_CH" UNIQUE(email);
-ALTER TABLE users
-DROP CONSTRAINT "UNIQUE_CH";
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* DROP TABLE users;
-
-CREATE TABLE users(
+DROP TABLE products;
+CREATE TABLE products (
     id serial PRIMARY KEY,
-    first_name VARCHAR(64) NOT NULL CONSTRAINT "RN_CH_NOT_EMPTY" CHECK(first_name != ''),
-    last_name VARCHAR(64) NOT NULL CHECK(last_name != ''),
-    email VARCHAR(256) NOT NULL CHECK(email != ''),
-    gender VARCHAR(64) NOT NULL,
-    isSubsribe BOOLEAN NOT NULL,
-    birthday date NOT NULL CHECK(birthday < current_date),
-    height numeric(3,2) NOT NULL CHECK(height > 0.2 AND height < 3.0)
+    name varchar(64),
+    category varchar(128),
+    price decimal(16,2) CHECK(price>0),
+    quantity int CHECK(quantity>0),
+    UNIQUE(name,category)
+
+)
+
+INSERT INTO products(name, category, price, quantity) VALUES ('samsung', 'phones', 100, 5),
+('iphone', 'phones', 100, 5),
+('xiaomi', 'computers', 5000, 2),
+('huawei', 'phones', 250, 3),
+('dell', 'computers', 2550, 10),
+('lenovo', 'phones', 70, 25);
+
+DROP TABLE orders;
+CREATE TABLE orders (
+    id serial PRIMARY KEY,
+    created_at timestamp DEFAULT current_timestamp,
+    customer_id int REFERENCES users(id)
 );
 
-INSERT INTO users (first_name,last_name,email,gender,isSubsribe, birthday, height) VALUES
-('Test', 'Testoviich', 'test@gmdfgdail.com', 'male', true, '1999-05-10', 1.53),
-('Tesest', 'jhjgbvbn', 'test@gmdfgdail.com', 'female', false, '1999-05-10', 1.13),
-('Test', 'Testoviich', 'test@gcvxsmail.com', 'male', true, '1999-05-10', 1.67),
-('Test', 'Testoviich', 'test@gmdsgail.com', 'female', true, '1999-05-10', 2.75);
+INSERT INTO orders (customer_id) VALUES(3),
+(3),
+(4),
+(3),
+(4);
 
-ALTER TABLE users
-ADD UNIQUE (email); */
+
+DROP TABLE products_to_orders;
+CREATE TABLE products_to_orders(
+    product_id int REFERENCES products(id),
+    order_id int REFERENCES orders(id),
+    quantity int,
+    PRIMARY KEY (product_id, order_id)
+)
+
+INSERT INTO products_to_orders (product_id, order_id, quantity) VALUES 
+(6, 4, 2),
+(5, 3, 1),
+(4, 1, 2),
+(2, 2, 1),
+(3, 3, 2),
+(1, 1, 1);
