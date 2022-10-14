@@ -1,55 +1,20 @@
-const {Client} = require('pg')
+const { Client } = require('pg')
+const { loadUsers } = require('./api')
 const config = {
-    user: 'postgres',
-    password: '1506',
-    host: 'localhost',
-    database: 'mydb',
-    port: '5432'
+  user: 'postgres',
+  password: '1506',
+  host: 'localhost',
+  database: 'mydb',
+  port: '5432'
 }
 const client = new Client(config)
-start();
+start()
 
-const users = [{
-    firstName: 'john',
-    lastName: 'Doe',
-    emali: 'iygh@gmakui.dov',
-    birthday: '1995/06/06',
-    gender: 'male',
-    height: 1.23,
-    isSubscribe: false
-},
-{
-    firstName: 'johtyn',
-    lastName: 'Doute',
-    emali: 'iygh@gmakui.dov',
-    birthday: '1995/06/06',
-    gender: 'male',
-    height: 1.23,
-    isSubscribe: false
-},
-{
-    firstName: 'jodrthn',
-    lastName: 'Dozsdte',
-    emali: 'iygh@gmakui.dov',
-    birthday: '1995/06/06',
-    gender: 'male',
-    height: 1.23,
-    isSubscribe: false
-},
-{
-    firstName: 'jhjkjohn',
-    lastName: 'Dojtte',
-    emali: 'iygh@gmakui.dov',
-    birthday: '1995/06/06',
-    gender: 'male',
-    height: 1.23,
-    isSubscribe: false
-}
-
-]
 async function start () {
-    await client.connect();
-    const res = await client.query(`
+  await client.connect()
+  const users = await loadUsers()
+
+  const res = await client.query(`
     INSERT INTO "users"(
         "first_name",
         "last_name",
@@ -58,18 +23,26 @@ async function start () {
         "birthday",
         "height",
         "issubsribe"
-    ) VALUES ${mapUsers(users)}`);
-    console.log(res);
+    ) VALUES ${mapUsers(users)}`)
 
-    await client.end()
+
+  await client.end()
 }
 
 function mapUsers (users) {
-    return users.map(u=>{
-        return `(
-           '${u.firstName}', '${u.lastName}', '${u.email}','${u.gender}','${u.birthday}','${u.height}','${u.isSubscribe}'
+  return users
+    .map(u => {
+      const {
+        name: { first, last },
+        gender,
+        email,
+        dob: { date }
+      } = u
+      return `(
+           '${first}', '${last}', '${email}','${gender}','${date}','${(
+        Math.random() + 1
+      ).toFixed(2)}',false
         )`
-    }).join(',')
+    })
+    .join(',')
 }
-
-console.log(mapUsers(users));
