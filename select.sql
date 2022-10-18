@@ -53,3 +53,36 @@ WHERE extract('month' from birthday ) = 9;
 
 SELECT * FROM users
 WHERE age(birthday) > make_interval(20) AND age(birthday) < make_interval(40)
+
+SELECT * from users
+WHERE id IN (101, 167, 302);
+
+SELECT * FROM users
+WHERE first_name LIKE '%a'
+
+UPDATE users
+SET height = 1.45
+WHERE id IN(107, 154, 87)
+
+SELECT * FROM users
+WHERE extract ('month' from birthday) = 11 AND extract('day' from birthday) = 21;
+
+SELECT id AS "Номер", first_name AS "Ім'я", last_name AS "Прізвище" FROM usersж
+
+SELECT * FROM users AS "u"
+WHERE u.id=99
+
+SELECT * FROM users
+LIMIT 15
+OFfSET 15;
+
+SELECT id, first_name || ' ' || last_name AS "Full name" FROM users;
+
+SELECT id, concat(first_name, ' ', last_name) AS "Full name" FROM users;
+
+SELECT id, concat(first_name, ' ', last_name) AS "Full name" FROM users
+WHERE char_length(concat(first_name, ' ', last_name))<9;
+
+SELECT * from
+    (SELECT id, concat(first_name, ' ', last_name) AS "Full name" FROM users) AS "FN"
+WHERE char_length("FN"."Full name") >15;
