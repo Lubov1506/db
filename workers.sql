@@ -62,3 +62,6 @@ DELETE from workers
 WHERE name='Petya';
 DELETE from workers
 WHERE age(birthday)> make_interval(30);
+
+SELECT EXTRACT('year' from age(birthday)) FROM workers;
+

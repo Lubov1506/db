@@ -86,3 +86,46 @@ WHERE char_length(concat(first_name, ' ', last_name))<9;
 SELECT * from
     (SELECT id, concat(first_name, ' ', last_name) AS "Full name" FROM users) AS "FN"
 WHERE char_length("FN"."Full name") >15;
+
+
+/* agregate */
+
+SELECT min(height) from users;
+SELECT max(height) from users;
+SELECT count(*) from users;
+SELECT avg(weight) from users;
+
+SELECT avg(weight) from users
+WHERE gender='male';
+SELECT avg(weight) as "avg weight", gender from users
+GROUP BY gender;
+
+SELECT max(weight)
+FROM users
+WHERE gender='female' AND extract('year' from age(birthday)) > 17;
+
+SELECT max(weight), gender
+FROM users
+WHERE extract('year' from age(birthday)) > 17
+GROUP BY gender;
+
+SELECT count(*), gender
+FROM users
+WHERE extract('year' from age(birthday)) = 38
+GROUP BY gender;
+
+SELECT avg(height) from users;
+SELECT avg(height) from users
+GROUP BY gender;
+
+SELECT gender, min(height), max(height) from users
+GROUP BY gender;
+
+SELECT count(*) from users
+WHERE extract('year' from birthday) > 1998;
+
+SELECT count(*) from users
+WHERE first_name LIKE 'A%'
+
+SELECT count(*) from users
+WHERE extract('year' from age(birthday)) BETWEEN 20 AND 30;
