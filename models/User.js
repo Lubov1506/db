@@ -1,15 +1,18 @@
-const { mapUsers } = require('../utils')
+const { mapUsers } = require('../utils');
 
 module.exports = class User {
-  static _client
-  static _tableName
-  static async findAll () {
-    const res = await this._client.query(`
- SELECT * FROM "${this._tableName}"`)
+  static _client;
+  static _tableName;
+
+  static findAll () {
+    return this._client.query(`
+    SELECT * FROM "${this._tableName}";
+    `);
   }
-  static async bulkCreate (users) {
-    return await this._client.query(`
-    INSERT INTO "${this._tableName}"(
+
+  static bulkCreate (users) {
+    return this._client.query(`
+    INSERT INTO "users"(
         "first_name",
         "last_name",
         "email",
@@ -17,6 +20,7 @@ module.exports = class User {
         "birthday",
         "height",
         "is_subscribe"
-    ) VALUES ${mapUsers(users)}`)
+    ) VALUES ${mapUsers(users)};
+    `);
   }
-}
+};
