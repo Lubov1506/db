@@ -16,7 +16,7 @@ module.exports = class User {
         "gender",
         "birthday",
         "height",
-        "issubsribe"
+        "is_subscribe"
     ) VALUES ${mapUsers(users)}`)
   }
 }
